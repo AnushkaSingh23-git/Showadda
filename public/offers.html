@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offers – BookMyShow</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page { max-width:1100px; margin:0 auto; padding:30px 20px 60px; }
+    .page-header { margin-bottom:30px; }
+    .page-header h1 { font-size:26px; color:rgb(26,26,48); }
+    .page-header p { color:#888; font-size:14px; margin-top:5px; }
+    .offers-grid { display:flex; flex-wrap:wrap; gap:20px; }
+    .offer-card { width:320px; background:white; border-radius:12px; overflow:hidden; box-shadow:0 2px 14px rgba(0,0,0,0.09); }
+    .offer-banner { height:140px; display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:800; color:white; letter-spacing:1px; }
+    .offer-body { padding:18px; }
+    .offer-body h3 { font-size:15px; color:rgb(26,26,48); margin-bottom:6px; }
+    .offer-body p { font-size:13px; color:#666; margin-bottom:12px; line-height:1.5; }
+    .offer-code { background:rgb(255,245,247); border:1.5px dashed rgb(244,69,98); border-radius:6px; padding:8px 14px; font-weight:700; color:rgb(244,69,98); font-size:14px; letter-spacing:2px; cursor:pointer; text-align:center; }
+    .offer-code:hover { background:rgb(244,69,98); color:white; }
+    .valid { font-size:11px; color:#aaa; margin-top:8px; }
+    .copy-toast { display:none; position:fixed; bottom:28px; left:50%; transform:translateX(-50%); background:rgb(26,26,48); color:white; padding:12px 24px; border-radius:8px; font-size:13px; font-weight:600; z-index:999; }
+  </style>
+</head>
+<body>
+
+  <nav class="fnav">
+    <div class="left">
+      <a href="/"><img src="/logo.png" alt="Logo" style="height:75px; object-fit:contain; display:block; filter:brightness(1.4) contrast(1.2) drop-shadow(0 0 10px rgba(244,69,98,0.7));"></a>
+    </div>
+    <div class="right">
+      <div id="authNav" style="display:flex; gap:8px; align-items:center;">
+        <button onclick="window.location.href='/signin'">Sign In</button>
+      </div>
+      <div id="menuWrapper" style="position:relative;">
+        <i class="fa-solid fa-ellipsis-vertical" id="menuToggle" style="cursor:pointer; font-size:20px; color:white; padding:4px 8px;"></i>
+        <div id="dropMenu" style="display:none; position:absolute; right:0; top:38px; background:white; border-radius:10px; box-shadow:0 6px 24px rgba(0,0,0,0.18); min-width:190px; z-index:1000; overflow:hidden;">
+          <a href="/" class="drop-item"><i class="fa-solid fa-house"></i> Home</a>
+          <a href="/giftcards.html" class="drop-item"><i class="fa-solid fa-gift"></i> Gift Cards</a>
+
+          <a href="/bookings" class="drop-item" style="border-top:1px solid #f0f0f0;"><i class="fa-solid fa-ticket"></i> My Bookings</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <nav class="sec-nav">
+    <div class="s-left">
+      <a href="/"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="/category.html?cat=Movies">Movies</a>
+      <a href="/category.html?cat=Stream">Stream</a>
+      <a href="/category.html?cat=Events">Events</a>
+      <a href="/category.html?cat=Plays">Plays</a>
+      <a href="/category.html?cat=Sports">Sports</a>
+      <a href="/category.html?cat=Activities">Activities</a>
+    </div>
+    <div class="s-right">
+
+      <a href="/offers.html" style="color:rgb(244,69,98);">Offers</a>
+      <a href="/giftcards.html">Gift Cards</a>
+    </div>
+  </nav>
+
+  <div class="page">
+    <div class="page-header">
+      <h1><i class="fa-solid fa-tag" style="color:rgb(244,69,98);"></i> Offers &amp; Discounts</h1>
+      <p>Exclusive deals to make your entertainment experience better</p>
+    </div>
+    <div class="offers-grid" id="offersGrid"></div>
+  </div>
+
+  <div class="copy-toast" id="copyToast">✓ Coupon code copied!</div>
+
+  <script>
+    const OFFERS = [
+      { bg:'linear-gradient(135deg,#667eea,#764ba2)', title:'HDFC Bank Offer', desc:'Get 20% off (up to ₹150) on movie tickets booked with HDFC Debit or Credit Cards. Valid Mon–Thu.', code:'HDFC20', valid:'Valid till 30 June 2026' },
+      { bg:'linear-gradient(135deg,#f7971e,#ffd200)', title:'Paytm Cashback', desc:'Pay via Paytm and get ₹100 cashback on your first booking of the month. Min. booking value ₹300.', code:'PAYTM100', valid:'Valid till 31 May 2026' },
+      { bg:'linear-gradient(135deg,#f093fb,#f5576c)', title:'Weekend Special', desc:'Book 2 or more tickets on weekends and get a flat ₹50 discount per ticket. Use code at checkout.', code:'WKND50', valid:'Every weekend' },
+      { bg:'linear-gradient(135deg,#11998e,#38ef7d)', title:'SBI Card Deal', desc:'15% off up to ₹200 on all event bookings with SBI Credit Cards. Applicable once per card per month.', code:'SBI15', valid:'Valid till 30 April 2026' },
+      { bg:'linear-gradient(135deg,#fc5c7d,#6a3093)', title:'First Booking Offer', desc:'New to BookMyShow? Get ₹200 off on your first booking. No minimum order value required!', code:'FIRST200', valid:'For new users only' },
+      { bg:'linear-gradient(135deg,#4facfe,#00f2fe)', title:'Sports Special', desc:'Book 4+ sports event tickets and get 10% off the total. Applicable on all cricket and kabaddi events.', code:'SPORT10', valid:'Valid till 31 Dec 2026' },
+    ];
+
+    function copyCode(code) {
+      navigator.clipboard.writeText(code).catch(() => {});
+      const toast = document.getElementById('copyToast');
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 2000);
+    }
+
+    const grid = document.getElementById('offersGrid');
+    OFFERS.forEach(o => {
+      const card = document.createElement('div');
+      card.className = 'offer-card';
+      card.innerHTML = `
+        <div class="offer-banner" style="background:${o.bg}">${o.title}</div>
+        <div class="offer-body">
+          <h3>${o.title}</h3>
+          <p>${o.desc}</p>
+          <div class="offer-code" onclick="copyCode('${o.code}')" title="Click to copy">${o.code}</div>
+          <p class="valid"><i class="fa-solid fa-clock"></i> ${o.valid}</p>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+
+    document.getElementById('menuToggle').addEventListener('click', e => {
+      e.stopPropagation();
+      const m = document.getElementById('dropMenu');
+      m.style.display = m.style.display === 'none' ? 'block' : 'none';
+    });
+    document.addEventListener('click', () => { document.getElementById('dropMenu').style.display = 'none'; });
+
+    fetch('/api/me').then(r => r.json()).then(user => {
+      const nav = document.getElementById('authNav');
+      if (user.loggedIn) {
+        nav.innerHTML = `
+          <span style="color:white; font-size:13px; font-weight:600;">Hi, ${user.name}</span>
+          <button onclick="window.location.href='/bookings'" style="background:transparent; border:1px solid rgb(244,69,98); color:rgb(244,69,98);">My Bookings</button>
+          <button id="logoutBtn">Sign Out</button>
+        `;
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+          fetch('/api/logout', { method: 'POST' }).then(() => location.reload());
+        });
+      }
+    });
+  </script>
+  <script src="js/ads.js"></script>
+</body>
+</html>

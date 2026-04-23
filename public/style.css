@@ -1,0 +1,472 @@
+/* ================= Global ================= */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Mulish', sans-serif;
+}
+
+/* ================= Dropdown Menu ================= */
+.drop-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  color: rgb(26, 26, 48);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.15s;
+}
+.drop-item:hover { background: rgb(245, 245, 250); color: rgb(244, 69, 98); }
+.drop-item i { width: 16px; color: rgb(244, 69, 98); }
+
+/* ================= Back Button ================= */
+.back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: white;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.3);
+  padding: 7px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  white-space: nowrap;
+}
+.back-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: white;
+}
+
+/* ================= FNav ================= */
+.fnav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 100px;
+  background-color: rgb(42, 42, 68);
+  color: white;
+}
+.fnav .left {
+  display: flex;
+  align-items: center;
+}
+.fnav .left img {
+  height: 60px;
+  width: auto;
+  margin-right: 15px;
+}
+.fnav .left input {
+  width: 400px;
+  height: 32px;
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  text-align: center;
+  margin-top: 4px;
+}
+.fnav .right {
+  display: flex;
+  align-items: center;
+}
+.fnav .right p {
+  margin-right: 20px;
+}
+.fnav .right button {
+  margin-right: 20px;
+  padding: 4px 12px;
+  border: none;
+  border-radius: 3px;
+  background-color: rgb(244, 69, 98);
+  color: white;
+  cursor: pointer;
+}
+.fnav .right button:hover {
+  opacity: 0.9;
+}
+.fnav .right i {
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* ================= Sec-Nav ================= */
+.sec-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgb(26, 26, 48);
+  color: white;
+  padding: 6px 100px;
+}
+.sec-nav .s-left,
+.sec-nav .s-right {
+  display: flex;
+  gap: 20px;
+}
+.sec-nav a {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+}
+.sec-nav a:hover {
+  color: pink;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/* ================= Main Banner ================= */
+.main img {
+  width: 100%;
+  display: block;
+}
+
+/* ================= Container & Cards ================= */
+.container {
+  padding: 20px 10px;
+}
+.container h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.container .card {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.card img {
+  width: 17%;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* ================= Premiere Section ================= */
+.premiere {
+  background-color: rgb(8, 8, 19);
+  color: white;
+  padding: 20px;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+/* ================= Footer ================= */
+footer.footer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgb(109, 109, 131);
+  padding: 25px 10px;
+}
+footer.footer img {
+  width: 18%;
+  border-top: 2px solid grey;
+  margin-bottom: 20px;
+}
+footer.footer .icon {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+footer.footer .icon i {
+  font-size: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+footer.footer .icon i:hover {
+  color: white;
+  transform: scale(1.2);
+}
+
+/* ================= Search Results ================= */
+#searchResults {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  padding: 20px;
+}
+
+/* ================= Signin Page ================= */
+.signin-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 56px);
+  background-color: rgb(245,245,250);
+}
+.signin-card {
+  background: white;
+  padding: 40px 36px;
+  border-radius: 10px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 400px;
+}
+.signin-card h2 {
+  text-align: center;
+  margin-bottom: 6px;
+  font-size: 22px;
+  color: rgb(26,26,48);
+}
+.signin-card p.sub {
+  text-align: center;
+  color: #888;
+  font-size: 13px;
+  margin-bottom: 28px;
+}
+.error-msg {
+  background: #ffe0e5;
+  color: rgb(244,69,98);
+  padding: 9px 14px;
+  border-radius: 5px;
+  font-size: 13px;
+  margin-bottom: 18px;
+  text-align: center;
+  display: none;
+}
+.form-group {
+  margin-bottom: 18px;
+}
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgb(26,26,48);
+  margin-bottom: 6px;
+}
+.form-group input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1.5px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+  outline: none;
+}
+.form-group input:focus {
+  border-color: rgb(244,69,98);
+}
+.signin-btn {
+  width: 100%;
+  padding: 11px;
+  background-color: rgb(244,69,98);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 6px;
+}
+.signin-btn:hover {
+  background-color: rgb(210,45,75);
+}
+.divider {
+  text-align: center;
+  color: #aaa;
+  margin: 18px 0;
+  font-size: 13px;
+}
+.social-btns {
+  display: flex;
+  gap: 10px;
+}
+.social-btn {
+  flex: 1;
+  padding: 9px;
+  border: 1.5px solid #ddd;
+  border-radius: 5px;
+  background: white;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+}
+.social-btn:hover {
+  border-color: rgb(244,69,98);
+}
+.register-link {
+  text-align: center;
+  margin-top: 22px;
+  font-size: 13px;
+  color: #555;
+}
+.register-link a {
+  color: rgb(244,69,98);
+  text-decoration: none;
+  font-weight: 600;
+}
+.back-link {
+  text-align: center;
+  margin-top: 14px;
+  font-size: 13px;
+}
+.back-link a {
+  color: #888;
+  text-decoration: none;
+}
+.back-link a:hover {
+  color: rgb(244,69,98);
+}
+
+/* ================= Modal ================= */
+#movieModal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.7);
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+.modal-content {
+  background: white;
+  padding: 20px;
+  width: 90%;
+  max-width: 700px;
+  border-radius: 8px;
+  position: relative;
+  max-height: 90%;
+  overflow-y: auto;
+}
+#closeModal {
+  position: absolute;
+  top: 12px;
+  right: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  color: #444;
+}
+.modal-content img {
+  width: 200px;
+  float: left;
+  margin-right: 20px;
+  border-radius: 5px;
+}
+.modal-content p {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #333;
+}
+.modal-section {
+  margin-bottom: 10px;
+}
+
+/* ================= Responsive ================= */
+
+/* ── Tablet (≤ 900px) ── */
+@media (max-width: 900px) {
+  .fnav { padding: 8px 24px; }
+  .fnav .left input { width: 220px; }
+  .sec-nav { padding: 6px 24px; }
+  .card img { width: 28%; }
+}
+
+/* ── Small Tablet (≤ 768px) ── */
+@media (max-width: 768px) {
+  /* Navbar */
+  .fnav { padding: 8px 16px; }
+  .fnav .left input { width: 170px; }
+
+  /* Sec nav – horizontal scroll */
+  .sec-nav {
+    padding: 6px 12px;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+  .sec-nav .s-left,
+  .sec-nav .s-right {
+    flex-wrap: nowrap;
+    gap: 14px;
+    white-space: nowrap;
+  }
+  .sec-nav a { font-size: 12px; }
+
+  /* Cards */
+  .card img { width: 40%; }
+
+  /* Footer */
+  footer.footer img { width: 32%; }
+
+  /* Modal */
+  .modal-content { padding: 16px; }
+  .modal-content img { width: 100%; float: none; margin: 0 0 15px 0; }
+
+  /* Main banner */
+  .main { padding: 24px 24px !important; }
+  .banner-icons { display: none !important; }
+}
+
+/* ── Mobile (≤ 480px) ── */
+@media (max-width: 480px) {
+  /* Navbar – stack logo + search on top, auth row below */
+  .fnav {
+    padding: 8px 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .fnav .left {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .fnav .left a img { height: 48px !important; }
+  .fnav .left input { width: calc(100% - 80px); font-size: 13px; }
+  .fnav .right {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  /* Sec nav */
+  .sec-nav { padding: 5px 8px; gap: 8px; }
+  .sec-nav .s-left,
+  .sec-nav .s-right { gap: 10px; }
+  .sec-nav a { font-size: 11px; }
+
+  /* Main banner */
+  .main {
+    padding: 28px 16px !important;
+    min-height: auto !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+  }
+  .main h1 { font-size: 24px !important; }
+  .main p  { font-size: 13px !important; }
+  .main .banner-icons { display: none !important; }
+
+  /* Cards – 2 per row */
+  .card img { width: 44%; }
+  .container { padding: 16px 8px; }
+  .container h2 { font-size: 18px; }
+
+  /* Footer */
+  footer.footer img { width: 55%; }
+  footer.footer .icon i { font-size: 24px; }
+
+  /* Movie modal */
+  .modal-content { width: 95%; padding: 14px; }
+
+  /* Seat modal grid – 5 columns instead of 8 */
+  #seatMap { grid-template-columns: repeat(5, 38px) !important; }
+
+  /* Payment modal */
+  #payModal > div > div:first-child { padding: 14px 16px !important; }
+  .pay-tab { font-size: 10px !important; padding: 8px 2px !important; }
+
+  /* Sign in */
+  .signin-card { padding: 28px 16px; }
+  .social-btns { flex-direction: column; }
+}

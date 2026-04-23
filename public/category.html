@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">BookMyShow</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .cat-header { padding:28px 30px 10px; }
+    .cat-header h1 { font-size:26px; color:rgb(26,26,48); }
+    .cat-header p { color:#888; font-size:14px; margin-top:4px; }
+    .shows-grid { display:flex; flex-wrap:wrap; gap:18px; padding:20px 30px 40px; justify-content:flex-start; }
+    .show-card { width:170px; cursor:pointer; }
+    .show-card img { width:100%; height:240px; object-fit:cover; border-radius:8px; transition:transform 0.2s; }
+    .show-card:hover img { transform:scale(1.04); }
+    .show-card .name { font-size:13px; font-weight:600; margin-top:8px; color:rgb(26,26,48); }
+    .show-card .rating { font-size:12px; color:green; }
+    .show-card .genre { font-size:11px; color:#888; }
+    .loading-msg { padding:60px; text-align:center; color:#888; font-size:15px; }
+    .empty-msg { padding:60px; text-align:center; color:#888; }
+    .empty-msg i { font-size:40px; color:#ddd; display:block; margin-bottom:12px; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="fnav">
+    <div class="left">
+      <a href="/"><img src="/logo.png" alt="Logo" style="height:75px; object-fit:contain; display:block; filter:brightness(1.4) contrast(1.2) drop-shadow(0 0 10px rgba(244,69,98,0.7));"></a>
+    </div>
+    <div class="right">
+      <div id="authNav" style="display:flex; gap:8px; align-items:center;">
+        <button onclick="window.location.href='/signin'">Sign In</button>
+      </div>
+      <div id="menuWrapper" style="position:relative;">
+        <i class="fa-solid fa-ellipsis-vertical" id="menuToggle" style="cursor:pointer; font-size:20px; color:white; padding:4px 8px;"></i>
+        <div id="dropMenu" style="display:none; position:absolute; right:0; top:38px; background:white; border-radius:10px; box-shadow:0 6px 24px rgba(0,0,0,0.18); min-width:190px; z-index:1000; overflow:hidden;">
+          <a href="/" class="drop-item"><i class="fa-solid fa-house"></i> Home</a>
+          <a href="/offers.html" class="drop-item"><i class="fa-solid fa-tag"></i> Offers</a>
+          <a href="/giftcards.html" class="drop-item"><i class="fa-solid fa-gift"></i> Gift Cards</a>
+
+          <a href="/bookings" class="drop-item" style="border-top:1px solid #f0f0f0;"><i class="fa-solid fa-ticket"></i> My Bookings</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Secondary Navigation -->
+  <nav class="sec-nav">
+    <div class="s-left">
+      <a href="/"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="/category.html?cat=Movies">Movies</a>
+      <a href="/category.html?cat=Stream">Stream</a>
+      <a href="/category.html?cat=Events">Events</a>
+      <a href="/category.html?cat=Plays">Plays</a>
+      <a href="/category.html?cat=Sports">Sports</a>
+      <a href="/category.html?cat=Activities">Activities</a>
+    </div>
+    <div class="s-right">
+
+      <a href="/offers.html">Offers</a>
+      <a href="/giftcards.html">Gift Cards</a>
+    </div>
+  </nav>
+
+  <!-- Category Header -->
+  <div class="cat-header">
+    <h1 id="catTitle">Loading...</h1>
+    <p id="catSubtitle"></p>
+  </div>
+
+  <!-- Shows Grid -->
+  <div class="shows-grid" id="showsGrid">
+    <div class="loading-msg"><i class="fa-solid fa-spinner fa-spin"></i> Loading...</div>
+  </div>
+
+  <!-- Movie Details Modal -->
+  <div id="movieModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; overflow-y:auto; z-index:999;">
+    <div class="modal-content" style="background:white; padding:20px; border-radius:8px; max-width:600px; width:90%; position:relative;">
+      <span id="closeModal" style="position:absolute; top:10px; right:15px; cursor:pointer; font-size:20px;">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <img id="modalImg" style="width:100%; max-height:300px; object-fit:cover; border-radius:5px; margin:10px 0;">
+      <p id="modalDesc"></p>
+      <p><b>Rating:</b> <span id="modalRating"></span></p>
+      <p><b>Genres:</b> <span id="modalGenres"></span></p>
+      <p><b>Premiered:</b> <span id="modalPremiered"></span></p>
+      <p><b>Actors:</b> <span id="modalActors"></span></p>
+      <div style="display:flex; gap:10px; margin-top:15px;">
+        <button id="checkSeats" style="padding:10px 20px; background:rgb(244,69,98); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:700; font-size:14px;">Check Seat Availability</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/booking.js"></script>
+  <script src="js/ads.js"></script>
+  <script>
+    const GENRE_MAP = {
+      Movies:     ['Drama', 'Action', 'Thriller', 'Adventure'],
+      Stream:     ['Crime', 'Mystery', 'Science-Fiction', 'Espionage'],
+      Events:     ['Music', 'Travel', 'Food'],
+      Plays:      ['Comedy', 'Romance'],
+      Sports:     ['Sports'],
+      Activities: ['Adventure', 'Travel', 'Nature', 'Food']
+    };
+
+    const params = new URLSearchParams(location.search);
+    const cat = params.get('cat') || 'Movies';
+    const genres = GENRE_MAP[cat] || GENRE_MAP.Movies;
+
+    document.getElementById('pageTitle').textContent = `${cat} – BookMyShow`;
+    document.getElementById('catTitle').textContent = cat;
+    document.getElementById('catSubtitle').textContent = `Browse ${genres.join(', ')} shows`;
+
+    // Highlight active nav link
+    document.querySelectorAll('.s-left a').forEach(a => {
+      if (a.href.includes(`cat=${cat}`)) a.style.color = 'rgb(244,69,98)';
+    });
+
+    function openModal(show) {
+      window.currentShow = show;
+      document.getElementById('movieModal').style.display = 'flex';
+      document.getElementById('modalTitle').innerText = show.name;
+      document.getElementById('modalImg').src = show.image?.medium ?? 'https://via.placeholder.com/210x295?text=No+Image';
+      document.getElementById('modalDesc').innerHTML = show.summary ?? 'No description available.';
+      document.getElementById('modalRating').innerText = show.rating?.average ?? 'N/A';
+      document.getElementById('modalGenres').innerText = show.genres?.join(', ') ?? '';
+      document.getElementById('modalPremiered').innerText = show.premiered ?? 'N/A';
+      document.getElementById('modalActors').innerText = 'Fetching...';
+      fetch(`https://api.tvmaze.com/shows/${show.id}/cast`)
+        .then(r => r.json())
+        .then(cast => {
+          document.getElementById('modalActors').innerText = cast.map(c => c.person.name).join(', ') || 'N/A';
+        });
+    }
+
+    document.getElementById('closeModal').addEventListener('click', () => {
+      document.getElementById('movieModal').style.display = 'none';
+      window.currentShow = null;
+    });
+
+    function createCard(show) {
+      const card = document.createElement('div');
+      card.className = 'show-card';
+      const poster = show.image?.medium ?? 'https://via.placeholder.com/170x240?text=No+Image';
+      card.innerHTML = `
+        <img src="${poster}" alt="${show.name}" loading="lazy">
+        <div class="name">${show.name}</div>
+        <div class="rating">⭐ ${show.rating?.average ?? 'N/A'}/10</div>
+        <div class="genre">${show.genres?.[0] ?? ''}</div>
+      `;
+      card.addEventListener('click', () => openModal(show));
+      return card;
+    }
+
+    // Fetch 3 pages and filter by genre
+    const grid = document.getElementById('showsGrid');
+    const pages = [0, 1, 2];
+    Promise.all(pages.map(p => fetch(`https://api.tvmaze.com/shows?page=${p}`).then(r => r.json())))
+      .then(results => {
+        const all = results.flat();
+        const filtered = all.filter(s => s.genres?.some(g => genres.includes(g)));
+        grid.innerHTML = '';
+        if (!filtered.length) {
+          grid.innerHTML = '<div class="empty-msg"><i class="fa-solid fa-film"></i><p>No shows found for this category.</p></div>';
+          return;
+        }
+        filtered.sort(() => Math.random() - 0.5).slice(0, 40).forEach(s => grid.appendChild(createCard(s)));
+      })
+      .catch(() => {
+        grid.innerHTML = '<div class="empty-msg"><i class="fa-solid fa-circle-exclamation"></i><p>Failed to load. Please try again.</p></div>';
+      });
+
+    // Auth nav
+    document.getElementById('menuToggle').addEventListener('click', e => {
+      e.stopPropagation();
+      const m = document.getElementById('dropMenu');
+      m.style.display = m.style.display === 'none' ? 'block' : 'none';
+    });
+    document.addEventListener('click', () => { document.getElementById('dropMenu').style.display = 'none'; });
+
+    fetch('/api/me').then(r => r.json()).then(user => {
+      const nav = document.getElementById('authNav');
+      if (user.loggedIn) {
+        nav.innerHTML = `
+          <span style="color:white; font-size:13px; font-weight:600;">Hi, ${user.name}</span>
+          <button onclick="window.location.href='/bookings'" style="background:transparent; border:1px solid rgb(244,69,98); color:rgb(244,69,98);">My Bookings</button>
+          <button id="logoutBtn">Sign Out</button>
+        `;
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+          fetch('/api/logout', { method: 'POST' }).then(() => location.reload());
+        });
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+[
+  {
+    "id": "1776584326475",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "1475",
+    "showName": "Hogan's Heroes",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/8/21123.jpg",
+    "seats": [
+      "2"
+    ],
+    "fare": 150,
+    "bookedAt": "2026-04-19T07:38:46.475Z"
+  },
+  {
+    "id": "1776584337795",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "1475",
+    "showName": "Hogan's Heroes",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/8/21123.jpg",
+    "seats": [
+      "3"
+    ],
+    "fare": 150,
+    "bookedAt": "2026-04-19T07:38:57.795Z"
+  },
+  {
+    "id": "1776584355692",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "1440",
+    "showName": "Tokyo Ghoul",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/604/1510953.jpg",
+    "seats": [
+      "32",
+      "31"
+    ],
+    "fare": 300,
+    "bookedAt": "2026-04-19T07:39:15.692Z"
+  },
+  {
+    "id": "1776586321883",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "2375",
+    "showName": "Tiny House Hunters",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/12/32237.jpg",
+    "seats": [
+      "19"
+    ],
+    "fare": 150,
+    "bookedAt": "2026-04-19T08:12:01.883Z"
+  },
+  {
+    "id": "1776586329711",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "2375",
+    "showName": "Tiny House Hunters",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/12/32237.jpg",
+    "seats": [
+      "4"
+    ],
+    "fare": 150,
+    "bookedAt": "2026-04-19T08:12:09.711Z"
+  },
+  {
+    "id": "1776586737377",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "1365",
+    "showName": "Man Seeking Woman",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/46/116897.jpg",
+    "seats": [
+      "20"
+    ],
+    "fare": 150,
+    "bookedAt": "2026-04-19T08:18:57.377Z"
+  },
+  {
+    "id": "1776586836940",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "3210",
+    "showName": "Buy This Restaurant",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/302/755400.jpg",
+    "seats": [
+      "28"
+    ],
+    "fare": 150,
+    "bookedAt": "2026-04-19T08:20:36.940Z"
+  },
+  {
+    "id": "1776592264081",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "3322",
+    "showName": "Monsterquest",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/609/1522708.jpg",
+    "seats": [
+      "11"
+    ],
+    "fare": 150,
+    "bookedAt": "2026-04-19T09:51:04.107Z"
+  },
+  {
+    "id": "1776674024539",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "4071",
+    "showName": "Las Fierbinți",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/19/49780.jpg",
+    "seats": [
+      "11"
+    ],
+    "fare": 150,
+    "bookedAt": "2026-04-20T08:33:44.539Z"
+  },
+  {
+    "id": "1776707744171",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "1582",
+    "showName": "Kosher Soul",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/302/755268.jpg",
+    "seats": [
+      "27"
+    ],
+    "fare": 150,
+    "paymentId": "PAY1776707744166",
+    "paymentMethod": "upi",
+    "bookedAt": "2026-04-20T17:55:44.171Z"
+  },
+  {
+    "id": "1776707938005",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "4584",
+    "showName": "Tom & Jerry Kids Show",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/341/853958.jpg",
+    "seats": [
+      "11"
+    ],
+    "fare": 150,
+    "paymentId": "PAY1776707938001",
+    "paymentMethod": "upi",
+    "bookedAt": "2026-04-20T17:58:58.005Z"
+  },
+  {
+    "id": "1776708122149",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "532",
+    "showName": "Scrubs",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/4/11371.jpg",
+    "seats": [
+      "20"
+    ],
+    "fare": 150,
+    "paymentId": "PAY1776708122146",
+    "paymentMethod": "netbanking",
+    "bookedAt": "2026-04-20T18:02:02.149Z"
+  },
+  {
+    "id": "1776708362350",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "1415",
+    "showName": "Heroes Reborn",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/197/493254.jpg",
+    "seats": [
+      "13"
+    ],
+    "fare": 150,
+    "paymentId": "PAY1776708362346",
+    "paymentMethod": "upi",
+    "bookedAt": "2026-04-20T18:06:02.350Z"
+  },
+  {
+    "id": "1776708382596",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "1415",
+    "showName": "Heroes Reborn",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/197/493254.jpg",
+    "seats": [
+      "29"
+    ],
+    "fare": 150,
+    "paymentId": "PAY1776708382592",
+    "paymentMethod": "upi",
+    "bookedAt": "2026-04-20T18:06:22.596Z"
+  },
+  {
+    "id": "1776708400450",
+    "userId": "1776584076123",
+    "userName": "Aparna",
+    "showId": "1415",
+    "showName": "Heroes Reborn",
+    "showImage": "https://static.tvmaze.com/uploads/images/medium_portrait/197/493254.jpg",
+    "seats": [
+      "22"
+    ],
+    "fare": 150,
+    "paymentId": "PAY1776708400446",
+    "paymentMethod": "upi",
+    "bookedAt": "2026-04-20T18:06:40.450Z"
+  }
+]

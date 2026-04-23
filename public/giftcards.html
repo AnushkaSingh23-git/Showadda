@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gift Cards – BookMyShow</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .page { max-width:1100px; margin:0 auto; padding:30px 20px 60px; }
+    .page-header { margin-bottom:30px; }
+    .page-header h1 { font-size:26px; color:rgb(26,26,48); }
+    .page-header p { color:#888; font-size:14px; margin-top:5px; }
+    .cards-grid { display:flex; flex-wrap:wrap; gap:24px; justify-content:flex-start; }
+    .gift-card {
+      width:320px; height:190px; border-radius:14px; overflow:hidden;
+      position:relative; cursor:pointer; box-shadow:0 6px 24px rgba(0,0,0,0.18);
+      transition:transform 0.25s, box-shadow 0.25s;
+    }
+    .gift-card:hover { transform:translateY(-6px); box-shadow:0 12px 32px rgba(0,0,0,0.25); }
+    .gift-card img { width:100%; height:100%; object-fit:cover; display:block; }
+    .gift-card .overlay {
+      position:absolute; inset:0;
+      background:linear-gradient(135deg, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.25) 100%);
+      display:flex; flex-direction:column; justify-content:space-between; padding:18px 22px;
+    }
+    .gift-card .brand { display:flex; align-items:center; gap:8px; }
+    .gift-card .brand img { height:28px; border-radius:4px; }
+    .gift-card .brand span { color:white; font-weight:800; font-size:16px; letter-spacing:0.5px; }
+    .gift-card .amount { color:white; font-size:30px; font-weight:800; letter-spacing:1px; }
+    .gift-card .card-footer { display:flex; justify-content:space-between; align-items:flex-end; }
+    .gift-card .card-num { color:rgba(255,255,255,0.75); font-size:12px; letter-spacing:2px; }
+    .gift-card .buy-btn {
+      background:rgb(244,69,98); color:white; border:none; border-radius:20px;
+      padding:6px 16px; font-size:12px; font-weight:700; cursor:pointer;
+    }
+    .gift-card .buy-btn:hover { background:rgb(210,45,75); }
+    .loading-msg { padding:60px; text-align:center; color:#888; }
+    .info-strip { background:rgb(255,248,220); border:1px solid #ffe07a; border-radius:8px; padding:14px 20px; margin-top:32px; display:flex; align-items:center; gap:12px; font-size:14px; color:rgb(26,26,48); }
+    .info-strip i { color:rgb(244,69,98); font-size:20px; }
+
+    /* Modal */
+    .buy-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.6); z-index:999; justify-content:center; align-items:center; }
+    .buy-modal.open { display:flex; }
+    .buy-modal-box { background:white; border-radius:12px; padding:32px; width:90%; max-width:400px; text-align:center; position:relative; }
+    .buy-modal-box h2 { color:rgb(26,26,48); margin-bottom:6px; }
+    .buy-modal-box p { color:#888; font-size:14px; margin-bottom:20px; }
+    .buy-modal-box .amount-display { font-size:36px; font-weight:800; color:rgb(244,69,98); margin-bottom:20px; }
+    .buy-modal-box input { width:100%; padding:10px 14px; border:1.5px solid #ddd; border-radius:5px; font-size:14px; margin-bottom:12px; outline:none; }
+    .buy-modal-box input:focus { border-color:rgb(244,69,98); }
+    .buy-modal-box .confirm-btn { width:100%; padding:12px; background:rgb(244,69,98); color:white; border:none; border-radius:6px; font-size:15px; font-weight:700; cursor:pointer; }
+    .buy-modal-box .confirm-btn:hover { background:rgb(210,45,75); }
+    .buy-modal-close { position:absolute; top:12px; right:16px; font-size:20px; cursor:pointer; color:#888; background:none; border:none; }
+    .success-toast { display:none; position:fixed; bottom:30px; left:50%; transform:translateX(-50%); background:rgb(26,26,48); color:white; padding:14px 28px; border-radius:8px; font-size:14px; font-weight:600; z-index:9999; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="fnav">
+    <div class="left">
+      <a href="/"><img src="/logo.png" alt="Logo" style="height:75px; object-fit:contain; display:block; filter:brightness(1.4) contrast(1.2) drop-shadow(0 0 10px rgba(244,69,98,0.7));"></a>
+    </div>
+    <div class="right">
+      <div id="authNav" style="display:flex; gap:8px; align-items:center;">
+        <button onclick="window.location.href='/signin'">Sign In</button>
+      </div>
+      <div id="menuWrapper" style="position:relative;">
+        <i class="fa-solid fa-ellipsis-vertical" id="menuToggle" style="cursor:pointer; font-size:20px; color:white; padding:4px 8px;"></i>
+        <div id="dropMenu" style="display:none; position:absolute; right:0; top:38px; background:white; border-radius:10px; box-shadow:0 6px 24px rgba(0,0,0,0.18); min-width:190px; z-index:1000; overflow:hidden;">
+          <a href="/" class="drop-item"><i class="fa-solid fa-house"></i> Home</a>
+          <a href="/offers.html" class="drop-item"><i class="fa-solid fa-tag"></i> Offers</a>
+
+          <a href="/bookings" class="drop-item" style="border-top:1px solid #f0f0f0;"><i class="fa-solid fa-ticket"></i> My Bookings</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Secondary Navigation -->
+  <nav class="sec-nav">
+    <div class="s-left">
+      <a href="/"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="/category.html?cat=Movies">Movies</a>
+      <a href="/category.html?cat=Stream">Stream</a>
+      <a href="/category.html?cat=Events">Events</a>
+      <a href="/category.html?cat=Plays">Plays</a>
+      <a href="/category.html?cat=Sports">Sports</a>
+      <a href="/category.html?cat=Activities">Activities</a>
+    </div>
+    <div class="s-right">
+
+      <a href="/offers.html">Offers</a>
+      <a href="/giftcards.html" style="color:rgb(244,69,98);">Gift Cards</a>
+    </div>
+  </nav>
+
+  <div class="page">
+    <div class="page-header">
+      <h1><i class="fa-solid fa-gift" style="color:rgb(244,69,98);"></i> Gift Cards</h1>
+      <p>Give the gift of entertainment — movies, events, plays &amp; more</p>
+    </div>
+
+    <div class="cards-grid" id="cardsGrid">
+      <div class="loading-msg"><i class="fa-solid fa-spinner fa-spin"></i> Loading gift cards...</div>
+    </div>
+
+    <div class="info-strip">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Gift cards are valid for 12 months from the date of purchase. Can be used for all bookings on BookMyShow.</span>
+    </div>
+  </div>
+
+  <!-- Buy Modal -->
+  <div class="buy-modal" id="buyModal">
+    <div class="buy-modal-box">
+      <button class="buy-modal-close" onclick="closeBuyModal()">&times;</button>
+      <h2>Buy Gift Card</h2>
+      <p>Enter recipient details</p>
+      <div class="amount-display" id="modalAmount">₹500</div>
+      <input type="text" id="recipientName" placeholder="Recipient's Name">
+      <input type="email" id="recipientEmail" placeholder="Recipient's Email">
+      <input type="text" id="senderMsg" placeholder="Your Message (optional)">
+      <button class="confirm-btn" onclick="confirmPurchase()">Purchase Gift Card</button>
+    </div>
+  </div>
+
+  <div class="success-toast" id="successToast">🎉 Gift card sent successfully!</div>
+
+  <script>
+    const AMOUNTS = [500, 1000, 1500, 2000, 3000, 5000];
+    const LOGO = '/logo.png';
+
+    let selectedAmount = 500;
+
+    function openBuyModal(amount) {
+      selectedAmount = amount;
+      document.getElementById('modalAmount').textContent = '₹' + amount.toLocaleString('en-IN');
+      document.getElementById('recipientName').value = '';
+      document.getElementById('recipientEmail').value = '';
+      document.getElementById('senderMsg').value = '';
+      document.getElementById('buyModal').classList.add('open');
+    }
+
+    function closeBuyModal() {
+      document.getElementById('buyModal').classList.remove('open');
+    }
+
+    function confirmPurchase() {
+      const name = document.getElementById('recipientName').value.trim();
+      const email = document.getElementById('recipientEmail').value.trim();
+      if (!name || !email) { alert('Please fill in recipient name and email.'); return; }
+      if (!email.includes('@')) { alert('Please enter a valid email address.'); return; }
+      closeBuyModal();
+      const toast = document.getElementById('successToast');
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+
+    // Fetch images from Picsum Photos API
+    fetch('https://picsum.photos/v2/list?page=3&limit=6')
+      .then(r => r.json())
+      .then(photos => {
+        const grid = document.getElementById('cardsGrid');
+        grid.innerHTML = '';
+        AMOUNTS.forEach((amount, i) => {
+          const photo = photos[i] || photos[0];
+          const imgUrl = `https://picsum.photos/id/${photo.id}/640/380`;
+          const cardNum = `**** **** **** ${String(1000 + i * 137).slice(-4)}`;
+          const card = document.createElement('div');
+          card.className = 'gift-card';
+          card.innerHTML = `
+            <img src="${imgUrl}" alt="Gift Card" loading="lazy">
+            <div class="overlay">
+              <div class="brand">
+                <img src="${LOGO}" alt="BMS">
+                <span>BookMyShow</span>
+              </div>
+              <div class="amount">₹${amount.toLocaleString('en-IN')}</div>
+              <div class="card-footer">
+                <span class="card-num">${cardNum}</span>
+                <button class="buy-btn" onclick="openBuyModal(${amount})">Buy Now</button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      })
+      .catch(() => {
+        // Fallback: render cards with gradient backgrounds
+        const grid = document.getElementById('cardsGrid');
+        const gradients = [
+          'linear-gradient(135deg,#667eea,#764ba2)',
+          'linear-gradient(135deg,#f093fb,#f5576c)',
+          'linear-gradient(135deg,#4facfe,#00f2fe)',
+          'linear-gradient(135deg,#43e97b,#38f9d7)',
+          'linear-gradient(135deg,#fa709a,#fee140)',
+          'linear-gradient(135deg,#a18cd1,#fbc2eb)',
+        ];
+        grid.innerHTML = '';
+        AMOUNTS.forEach((amount, i) => {
+          const card = document.createElement('div');
+          card.className = 'gift-card';
+          card.style.background = gradients[i];
+          const cardNum = `**** **** **** ${String(1000 + i * 137).slice(-4)}`;
+          card.innerHTML = `
+            <div class="overlay" style="background:none;">
+              <div class="brand">
+                <img src="${LOGO}" alt="BMS">
+                <span>BookMyShow</span>
+              </div>
+              <div class="amount">₹${amount.toLocaleString('en-IN')}</div>
+              <div class="card-footer">
+                <span class="card-num">${cardNum}</span>
+                <button class="buy-btn" onclick="openBuyModal(${amount})">Buy Now</button>
+              </div>
+            </div>
+          `;
+          grid.appendChild(card);
+        });
+      });
+
+    // Auth nav
+    document.getElementById('menuToggle').addEventListener('click', e => {
+      e.stopPropagation();
+      const m = document.getElementById('dropMenu');
+      m.style.display = m.style.display === 'none' ? 'block' : 'none';
+    });
+    document.addEventListener('click', () => { document.getElementById('dropMenu').style.display = 'none'; });
+
+    fetch('/api/me').then(r => r.json()).then(user => {
+      const nav = document.getElementById('authNav');
+      if (user.loggedIn) {
+        nav.innerHTML = `
+          <span style="color:white; font-size:13px; font-weight:600;">Hi, ${user.name}</span>
+          <button onclick="window.location.href='/bookings'" style="background:transparent; border:1px solid rgb(244,69,98); color:rgb(244,69,98);">My Bookings</button>
+          <button id="logoutBtn">Sign Out</button>
+        `;
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+          fetch('/api/logout', { method: 'POST' }).then(() => location.reload());
+        });
+      }
+    });
+  </script>
+  <script src="js/ads.js"></script>
+</body>
+</html>

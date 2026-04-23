@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BookMyShow</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="fnav">
+    <div class="left">
+      <a href="/"><img src="/logo.png" alt="Logo" style="height:75px; object-fit:contain; display:block; filter:brightness(1.4) contrast(1.2) drop-shadow(0 0 10px rgba(244,69,98,0.7));"></a>
+      <input type="text" id="searchInput" placeholder="Search for movies, events, plays"
+        onkeydown="if(event.key==='Enter') searchShows()" autocomplete="off">
+    </div>
+    <div class="right">
+      <!-- Dynamic Location -->
+      <div id="locationBtn" style="display:flex; align-items:center; gap:5px; cursor:pointer; color:white; user-select:none;" title="Click to detect location" onclick="detectLocation()">
+        <i class="fa-solid fa-location-dot" style="color:rgb(244,69,98); font-size:14px;"></i>
+        <span id="locationText" style="font-size:13px; font-weight:600; max-width:100px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">Detecting...</span>
+        <i class="fa-solid fa-chevron-down" style="font-size:10px; opacity:0.6;"></i>
+      </div>
+      <!-- Auth -->
+      <div id="authNav" style="display:flex; gap:8px; align-items:center;">
+        <button onclick="window.location.href='/signin'">Sign In</button>
+      </div>
+      <!-- 3-dot dropdown -->
+      <div id="menuWrapper" style="position:relative;">
+        <i class="fa-solid fa-ellipsis-vertical" id="menuToggle" style="cursor:pointer; font-size:20px; color:white; padding:4px 8px;"></i>
+        <div id="dropMenu" style="display:none; position:absolute; right:0; top:38px; background:white; border-radius:10px; box-shadow:0 6px 24px rgba(0,0,0,0.18); min-width:190px; z-index:1000; overflow:hidden;">
+          <a href="/" class="drop-item"><i class="fa-solid fa-house"></i> Home</a>
+          <a href="/offers.html" class="drop-item"><i class="fa-solid fa-tag"></i> Offers</a>
+          <a href="/giftcards.html" class="drop-item"><i class="fa-solid fa-gift"></i> Gift Cards</a>
+
+          <a href="/bookings" class="drop-item" style="border-top:1px solid #f0f0f0;"><i class="fa-solid fa-ticket"></i> My Bookings</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Secondary Navigation -->
+  <nav class="sec-nav">
+    <div class="s-left">
+      <a href="/" style="color:rgb(244,69,98);"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="/category.html?cat=Movies">Movies</a>
+      <a href="/category.html?cat=Stream">Stream</a>
+      <a href="/category.html?cat=Events">Events</a>
+      <a href="/category.html?cat=Plays">Plays</a>
+      <a href="/category.html?cat=Sports">Sports</a>
+      <a href="/category.html?cat=Activities">Activities</a>
+    </div>
+    <div class="container" id="searchResults" style="display:flex; flex-wrap:wrap; justify-content:center; gap:15px; padding:20px;"></div>
+    <div class="s-right">
+
+      <a href="/offers.html">Offers</a>
+      <a href="/giftcards.html">Gift Cards</a>
+    </div>
+  </nav>
+
+  <!-- Main Banner -->
+  <div class="main" style="background:linear-gradient(120deg,rgb(26,26,48) 0%,rgb(80,10,50) 50%,rgb(42,42,68) 100%); min-height:280px; display:flex; align-items:center; padding:0 60px; position:relative; overflow:hidden;">
+    <!-- Decorative circles -->
+    <div style="position:absolute;width:340px;height:340px;border-radius:50%;background:rgba(244,69,98,0.12);top:-80px;right:180px;pointer-events:none;"></div>
+    <div style="position:absolute;width:220px;height:220px;border-radius:50%;background:rgba(244,69,98,0.08);bottom:-60px;right:80px;pointer-events:none;"></div>
+    <div style="position:absolute;font-size:180px;right:40px;top:-10px;opacity:0.05;color:white;pointer-events:none;">🎬</div>
+    <!-- Content -->
+    <div style="position:relative;z-index:1;max-width:600px;">
+      <p style="color:rgb(244,69,98);font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;">Now Showing</p>
+      <h1 style="color:white;font-size:36px;font-weight:800;line-height:1.2;margin-bottom:12px;">Your Entertainment,<br>Your Way.</h1>
+      <p style="color:rgba(255,255,255,0.65);font-size:15px;margin-bottom:24px;">Movies &nbsp;·&nbsp; Live Events &nbsp;·&nbsp; Plays &nbsp;·&nbsp; Sports &nbsp;·&nbsp; Activities</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <button onclick="window.location.href='/category.html?cat=Movies'" style="background:rgb(244,69,98);color:white;border:none;padding:11px 28px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;">Book Tickets</button>
+        <button onclick="window.location.href='/category.html?cat=Events'" style="background:transparent;color:white;border:2px solid rgba(255,255,255,0.4);padding:11px 28px;border-radius:6px;font-size:14px;font-weight:700;cursor:pointer;">Explore Events</button>
+      </div>
+    </div>
+    <!-- Ad Panel -->
+    <div id="bannerAdPanel" style="position:absolute;right:50px;top:50%;transform:translateY(-50%);z-index:2;width:220px;">
+      <div id="bannerAdCard" style="background:rgba(255,255,255,0.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2);border-radius:14px;overflow:hidden;">
+        <!-- Ad header -->
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:rgba(0,0,0,0.2);">
+          <span style="font-size:9px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,0.5);">ADVERTISEMENT</span>
+          <button id="bannerAdClose" title="Close" style="background:none;border:none;color:rgba(255,255,255,0.55);font-size:14px;cursor:pointer;padding:0;line-height:1;transition:color 0.2s;">&#x2715;</button>
+        </div>
+        <!-- Ad content (filled by JS) -->
+        <div id="bannerAdContent" style="padding:16px 14px 14px;text-align:center;min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;"></div>
+        <!-- Dots -->
+        <div id="bannerAdDots" style="display:flex;justify-content:center;gap:6px;padding:0 0 12px;"></div>
+        <!-- Progress bar -->
+        <div style="height:3px;background:rgba(255,255,255,0.1);">
+          <div id="bannerAdProgress" style="height:100%;width:0%;background:rgba(255,255,255,0.6);transition:none;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Recommended Movies -->
+  <div class="container">
+    <h2>Recommended Movies</h2>
+    <div class="card" id="movieCard"><p>Loading...</p></div>
+  </div>
+
+  <!-- Best of Live Events -->
+  <div class="container">
+    <h2>Best Of Live Events</h2>
+    <div class="card" id="eventCard"><p>Loading...</p></div>
+  </div>
+
+  <!-- Premiere -->
+  <div class="container">
+    <h2>PREMIERE</h2>
+    <div class="card" id="premiereCard"><p>Loading...</p></div>
+  </div>
+
+  <!-- Movie Details Modal -->
+  <div id="movieModal" class="modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; overflow-y:auto;">
+    <div class="modal-content" style="background:white; padding:20px; border-radius:8px; max-width:600px; width:90%; position:relative;">
+      <span id="closeModal" style="position:absolute; top:10px; right:15px; cursor:pointer; font-size:20px;">&times;</span>
+      <h2 id="modalTitle"></h2>
+      <img id="modalImg" style="width:100%; max-height:300px; object-fit:cover; border-radius:5px; margin:10px 0;">
+      <p id="modalDesc"></p>
+      <p><b>Rating:</b> <span id="modalRating"></span></p>
+      <p><b>Genres:</b> <span id="modalGenres"></span></p>
+      <p><b>Premiered:</b> <span id="modalPremiered"></span></p>
+      <p><b>Actors:</b> <span id="modalActors"></span></p>
+      <div id="modalButtons" style="display:flex; gap:10px; margin-top:15px;">
+        <button id="checkSeats" style="padding:10px 20px; background:rgb(244,69,98); color:white; border:none; border-radius:4px; cursor:pointer; font-weight:700; font-size:14px;">Check Seat Availability</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <img src="/logo.png" alt="Logo" style="height:120px; object-fit:contain; display:block; filter:brightness(1.4) contrast(1.2) drop-shadow(0 0 10px rgba(244,69,98,0.7));">
+    <div class="icon">
+      <i class="fa-brands fa-facebook"></i>
+      <i class="fa-brands fa-square-instagram"></i>
+      <i class="fa-brands fa-twitter"></i>
+      <i class="fa-brands fa-youtube"></i>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/fetch.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/booking.js"></script>
+  <script src="js/ads.js"></script>
+  <script>
+    // Dynamic location via browser Geolocation + Nominatim reverse geocoding
+    function detectLocation() {
+      const text = document.getElementById('locationText');
+      text.textContent = 'Detecting...';
+      if (!navigator.geolocation) { text.textContent = 'Set Location'; return; }
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${pos.coords.latitude}&lon=${pos.coords.longitude}`)
+            .then(r => r.json())
+            .then(d => {
+              text.textContent = d.address.city || d.address.town || d.address.county || d.address.state || 'Location';
+            })
+            .catch(() => { text.textContent = 'Location'; });
+        },
+        () => { text.textContent = 'Set Location'; }
+      );
+    }
+    detectLocation();
+
+    // 3-dot dropdown toggle
+    document.getElementById('menuToggle').addEventListener('click', e => {
+      e.stopPropagation();
+      const m = document.getElementById('dropMenu');
+      m.style.display = m.style.display === 'none' ? 'block' : 'none';
+    });
+    document.addEventListener('click', () => {
+      document.getElementById('dropMenu').style.display = 'none';
+    });
+
+    fetch('/api/me').then(r => r.json()).then(user => {
+      const nav = document.getElementById('authNav');
+      if (user.loggedIn) {
+        nav.innerHTML = `
+          <span style="color:white; font-size:13px; font-weight:600;">Hi, ${user.name}</span>
+          <button onclick="window.location.href='/bookings'" style="background:transparent; border:1px solid rgb(244,69,98); color:rgb(244,69,98);">My Bookings</button>
+          <button id="logoutBtn">Sign Out</button>
+        `;
+        document.getElementById('logoutBtn').addEventListener('click', () => {
+          fetch('/api/logout', { method: 'POST' }).then(() => location.reload());
+        });
+      }
+    });
+  </script>
+
+</body>
+</html>
