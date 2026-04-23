@@ -5,12 +5,14 @@ function showError(msg) {
   document.getElementById('successMsg').classList.add('hidden');
 }
 
+
 function showSuccess(msg) {
   const el = document.getElementById('successMsg');
   el.textContent = msg;
   el.classList.remove('hidden');
   document.getElementById('errMsg').classList.add('hidden');
 }
+
 
 function clearMessages() {
   document.getElementById('errMsg').classList.add('hidden');
@@ -31,6 +33,7 @@ function switchTab(tab) {
     document.getElementById('loginForm').classList.add('hidden');
   }
 }
+
 
 function doLogin() {
   clearMessages();
@@ -106,6 +109,7 @@ function doRegister() {
 }
 
 // Allow Enter key to submit
+
 document.addEventListener('keydown', e => {
   if (e.key !== 'Enter') return;
   if (!document.getElementById('registerForm').classList.contains('hidden')) doRegister();
