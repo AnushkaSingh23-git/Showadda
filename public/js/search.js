@@ -1,4 +1,4 @@
-function searchShows() {
+function searchShows(){
       const query = document.getElementById('searchInput').value.trim();
       const results = document.getElementById('searchResults');
 
@@ -6,7 +6,6 @@ function searchShows() {
         alert('Please type something!');
         return;
       }
-
       results.innerHTML = '<p style="color:gray; width:100%; text-align:center">Searching...</p>';
       results.scrollIntoView({ behavior: 'smooth' });
 
@@ -20,7 +19,7 @@ function searchShows() {
             return;
           }
 
-          data.forEach(function(item) {
+          data.forEach(function(item){
             var show = item.show;
             var poster = (show.image && show.image.medium)
               ? show.image.medium
@@ -43,7 +42,9 @@ function searchShows() {
             results.appendChild(div);
           });
         })
-        .catch(function(err) {
+      //error 
+            
+        .catch(function(err){
           console.error('Search error:', err);
           results.innerHTML = '<p style="color:red">Search failed. Check console (F12).</p>';
         });
